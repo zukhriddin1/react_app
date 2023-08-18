@@ -1,48 +1,41 @@
-import { useEffect, useState, useCallback } from "react";
-import "./App.css";
-import Counteritem from "../counter-item/counter-item";
-const User = ({ forstName, lastName, link }) => {
-  const [counter, setCounter] = useState(0);
-  const [active, setActive] = useState(true);
+import React from "react";
+import useInputValidation from "../hook/usevalidate";
 
-  const onIncrement = () => setCounter((prevState) => prevState + 1);
-  const onToggle = () => setActive((prevState) => !prevState);
+const MyButton = ({ children }) => {
+  return <button className="mt-3 btn btn-success">{children}</button>;
+};
+const User = () => {
+  const firstname = useInputValidation("");
+  const lastName = useInputValidation("");
 
-  const counterGenerate = useCallback(() => {
-    return new Array(counter)
-      .fill("")
-      .map((_, ind) => `Counter number ${ind + 1}`);
-  }, [counter]);
-
-  const colors = {
-    color: active ? "red" : "green",
-  };
   return (
     <div className="w-50 mx-auto">
       <div className="border p-3 mt-5">
-        <p className="text-center" style={colors}>
-          User activeted {counter}
-        </p>
-        <div className="d-flex justify-content-center">
-          <button className="btn btn-success" onClick={onIncrement}>
-            Increase
-          </button>
-          <button className="btn btn-warning" onClick={onToggle}>
-            Toggle
-          </button>
+        <h1>Register</h1>
+        <div className="d-flex gap-3">
+          <input
+            type="text"
+            className={`form-control ${firstname.validateColor}`}
+            placeholder="First name"
+            value={firstname.value}
+            onChange={firstname.onChange}
+          />
+          <input
+            type="text"
+            className={`form-control ${lastName.validateColor}`}
+            placeholder="Last name"
+            value={lastName.value}
+            onChange={lastName.onChange}
+          />
         </div>
-        {<Counteritem counterGenerate={counterGenerate} />}
+        <MyButton>Send</MyButton>
       </div>
     </div>
   );
 };
 
 export const App = () => {
-  return (
-    <>
-      <User forstName="Zuhriddin" lastName="Giyosiddinov" link="youtube.com" />
-    </>
-  );
+  return <User />;
 };
 
 export default App;
